@@ -1,0 +1,30 @@
+name: Invoke Lambda with OIDC
+ 
+on:
+  schedule:
+    - cron: ' 0 */2 * * * '
+ 
+jobs:
+  invoke-lambda:
+    # 1) Grant OIDC permissions to request the ID token
+    permissions:
+      id-token: write
+      contents: read
+ 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+ 
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::147997153912:role/lambda_rol_invokefunction_cinepos
+          aws-region: us-east-1
+ 
+      - name: Invoke Lambda
+        run: |
+          aws lambda invoke \
+            --function-name cine_pos_data \
+            output.json
+          echo "Lambda output:"
+          cat output.json
