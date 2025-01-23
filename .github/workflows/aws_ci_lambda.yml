@@ -1,0 +1,19 @@
+name: CLI Lambda AWS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  invoke-lambda:
+
+    runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v3
+      
+      - name: Update Lambda
+        run: |
+          aws lambda invoke \
+            --function-name cine_pos_data \
+            output.json
+          echo "Lambda output:"
+          cat output.json
