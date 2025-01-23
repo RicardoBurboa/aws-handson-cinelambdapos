@@ -17,13 +17,13 @@ jobs:
       - name: Configure AWS Credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: 
+          role-to-assume: arn:aws:iam::147997153912:role/lambda_rol_invokefunction_cinepos
           aws-region: us-east-1
  
       - name: Invoke Lambda
         run: |
           aws lambda invoke \
-            --function-name pos_data \
+            --function-name cine_pos_data \
             output.json
           echo "Lambda output:"
           cat output.json
